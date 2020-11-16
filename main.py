@@ -70,7 +70,7 @@ def train(model, train_loader, optimizer, criterion):
         data.y = data.y.to(DEVICE)
         data.batch=data.batch.to(DEVICE)
         data.edge_attr=data.edge_attr.to(DEVICE)
-        data.edge_index==dat.edge_index.to(DEVICE)
+        data.edge_index=data.edge_index.to(DEVICE)
 
         out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
         loss = criterion(out, data.y)  # Compute the loss.
