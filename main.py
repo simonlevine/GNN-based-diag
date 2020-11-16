@@ -28,7 +28,7 @@ from torch_geometric.data import DataLoader
 
 def main():
 
-    processed_dataset = CellGraphDataset(root='/data', name = 'DS',use_node_attr=True,use_edge_attr=True)
+    dataset = CellGraphDataset(root='/data', name = 'DS',use_node_attr=True,use_edge_attr=True)
 
     print_graph_stats(dataset)
 
@@ -54,7 +54,7 @@ def main():
         print(data)
         print()
 
-    model = GNN(hidden_channels=64)
+    model = GNN(hidden_channels=64,dataset=dataset)
     print(model)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
@@ -66,7 +66,6 @@ def main():
         test_acc = test(model,data,test_loader)
         print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
 
-    
 
 def train(model, train_loader, optimizer, criterion):
     model.train()
