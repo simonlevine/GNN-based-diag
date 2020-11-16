@@ -23,8 +23,8 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def main():
 
-    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
-    print(dataset)
+    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=True,use_edge_attr=True)
+    print(dataset.num)
     # visualize_graph(dataset[0])
 
     print_graph_stats(dataset)

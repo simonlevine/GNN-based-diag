@@ -1,10 +1,3 @@
-import torch
-
-
-# !pip install -q torch-scatter==latest+cu101 -f https://pytorch-geometric.com/whl/torch-1.7.0.html
-# !pip install -q torch-sparse==latest+cu101 -f https://pytorch-geometric.com/whl/torch-1.7.0.html
-# !pip install -q torch-geometric
-
 import os
 import os.path as osp
 import shutil
@@ -150,7 +143,7 @@ class CellGraphDataset(InMemoryDataset):
     def num_node_labels(self):
         if self.data.x is None:
             return 0
-        for i in trange(self.data.x.size(1)):
+        for i in range(self.data.x.size(1)):
             x = self.data.x[:, i:]
             if ((x == 0) | (x == 1)).all() and (x.sum(dim=1) == 1).all():
                 return self.data.x.size(1) - i
@@ -166,7 +159,7 @@ class CellGraphDataset(InMemoryDataset):
     def num_edge_labels(self):
         if self.data.edge_attr is None:
             return 0
-        for i in trange(self.data.edge_attr.size(1)):
+        for i in range(self.data.edge_attr.size(1)):
             if self.data.edge_attr[:, i:].sum() == self.data.edge_attr.size(0):
                 return self.data.edge_attr.size(1) - i
         return 0
@@ -194,12 +187,12 @@ class CellGraphDataset(InMemoryDataset):
         self.data, self.slices = read_cell_data(self.raw_dir, self.name)
 
         if self.pre_filter is not None:
-            data_list = [self.get(idx) for idx in trange(len(self))]
+            data_list = [self.get(idx) for idx in range(len(self))]
             data_list = [data for data in data_list if self.pre_filter(data)]
             self.data, self.slices = self.collate(data_list)
 
         if self.pre_transform is not None:
-            data_list = [self.get(idx) for idx in trange(len(self))]
+            data_list = [self.get(idx) for idx in range(len(self))]
             data_list = [self.pre_transform(data) for data in data_list]
             self.data, self.slices = self.collate(data_list)
 
