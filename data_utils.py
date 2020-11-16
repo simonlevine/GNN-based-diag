@@ -41,6 +41,7 @@ def read_cell_data(folder, prefix, names=NAMES):
 
     node_attributes = node_labels = None
     if 'node_attributes' in names:
+        print('Loading Node Attribute Data...')
         node_attributes = read_file(folder, prefix, 'node_attributes')
     if 'node_labels' in names:
         print('Loading Node Labels Data...')
@@ -58,7 +59,7 @@ def read_cell_data(folder, prefix, names=NAMES):
         print('Loading Edge Attribute Data...')
         edge_attributes = read_file(folder, prefix, 'edge_attributes')
     if 'edge_labels' in names:
-        
+        print('Loading Edge Label Data...')
         edge_labels = read_file(folder, prefix, 'edge_labels', torch.long)
         if edge_labels.dim() == 1:
             edge_labels = edge_labels.unsqueeze(-1)
@@ -75,6 +76,7 @@ def read_cell_data(folder, prefix, names=NAMES):
         y = read_file(folder, prefix, 'graph_labels', torch.long)
         _, y = y.unique(sorted=True, return_inverse=True)
     elif 'graph_attributes' in names:  # Regression problem.
+        print('Loading Graph Attribute Data...')
         y = read_file(folder, prefix, 'graph_attributes')
 
     num_nodes = edge_index.max().item() + 1 if x is None else x.size(0)
