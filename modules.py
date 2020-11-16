@@ -25,6 +25,7 @@ from torch_geometric.nn import global_mean_pool
 from torch_geometric.nn import GraphConv
 
 
+
 class GNN(torch.nn.Module):
     def __init__(self, hidden_channels,dataset):
         super(GNN, self).__init__()
@@ -78,7 +79,6 @@ class GCN(torch.nn.Module):
         x = self.lin(x)
         
         return x
-
 
 
 
