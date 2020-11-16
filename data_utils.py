@@ -14,12 +14,10 @@ from torch_geometric.io import read_txt_array
 from torch_geometric.utils import remove_self_loops
 from torch_geometric.data import Data
 
-names = [
-    'A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes' ]
+names = ['A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes' ]
 #      ,
 #      'edge_labels', 'node_labels','node_attributes',
 # ]
-
 
 def read_cell_data(folder, prefix, names):
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
