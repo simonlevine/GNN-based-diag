@@ -15,12 +15,12 @@ from torch_geometric.utils import remove_self_loops
 from torch_geometric.data import Data
 
 names = [
-    'A', 'graph_indicator', 'node_labels', 'node_attributes'
-    'edge_labels', 'edge_attributes', 'graph_labels', 'graph_attributes'
+    'A', 'graph_indicator', 'node_attributes',
+    'edge_labels', 'edge_attributes', 'graph_labels', 'graph_attributes' #, 'node_labels'
 ]
 
 
-[docs]def read_cell_data(folder, prefix):
+def read_cell_data(folder, prefix):
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
     names = [f.split(os.sep)[-1][len(prefix) + 1:-4] for f in files]
 
@@ -69,7 +69,6 @@ names = [
     data, slices = split(data, batch)
 
     return data, slices
-
 
 
 def read_file(folder, prefix, name, dtype=None):

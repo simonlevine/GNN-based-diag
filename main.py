@@ -9,8 +9,6 @@ from torch_geometric.data import Dataset
 
 from tqdm.notebook import tqdm
 
-from torch_geometric.io import read_tu_data
-
 from torch.nn import Linear
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv
@@ -18,7 +16,7 @@ from torch_geometric.nn import global_mean_pool
 from torch_geometric.data import DataLoader
 
 from modules import GNN,GCN,CellGraphDataset
-# from data_utils import read_cell_data
+from data_utils import read_cell_data
 
 def main():
 
