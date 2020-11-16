@@ -43,6 +43,7 @@ def read_cell_data(folder, prefix, names=NAMES):
     if 'node_attributes' in names:
         node_attributes = read_file(folder, prefix, 'node_attributes')
     if 'node_labels' in names:
+        print('Loading Node Labels Data...')
         node_labels = read_node_label_file(folder, prefix, 'node_labels', torch.long)
         if node_labels.dim() == 1:
             node_labels = node_labels.unsqueeze(-1)
@@ -57,6 +58,7 @@ def read_cell_data(folder, prefix, names=NAMES):
         print('Loading Edge Attribute Data...')
         edge_attributes = read_file(folder, prefix, 'edge_attributes')
     if 'edge_labels' in names:
+        
         edge_labels = read_file(folder, prefix, 'edge_labels', torch.long)
         if edge_labels.dim() == 1:
             edge_labels = edge_labels.unsqueeze(-1)
