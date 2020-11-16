@@ -1,10 +1,4 @@
 import torch
-
-
-# !pip install -q torch-scatter==latest+cu101 -f https://pytorch-geometric.com/whl/torch-1.7.0.html
-# !pip install -q torch-sparse==latest+cu101 -f https://pytorch-geometric.com/whl/torch-1.7.0.html
-# !pip install -q torch-geometric
-
 import os
 import os.path as osp
 import shutil
@@ -109,3 +103,6 @@ def print_graph_stats(dataset):
     print(f'Contains isolated nodes: {data.contains_isolated_nodes()}')
     print(f'Contains self-loops: {data.contains_self_loops()}')
     print(f'Is undirected: {data.is_undirected()}')
+
+if __name__=='__main__':
+    main()
