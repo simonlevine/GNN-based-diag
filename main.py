@@ -23,9 +23,10 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def main():
 
-    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=True,use_edge_attr=True)
-    print(dataset.num)
+    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
+    print(dataset.num_node_features)
     # visualize_graph(dataset[0])
+    num_node_features = dataset[0].num_node_features
 
     print_graph_stats(dataset)
 
@@ -51,7 +52,7 @@ def main():
         print(data)
         print()
 
-    model = GNN(hidden_channels=64,dataset=dataset).to(DEVICE)
+    model = GNN(hidden_channels=64,num_node_features=num_node_features).to(DEVICE)
     print(model)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
