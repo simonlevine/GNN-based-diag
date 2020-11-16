@@ -15,7 +15,9 @@ from torch_geometric.data import Dataset
 
 from tqdm import tqdm
 
-from torch_geometric.io import read_tu_data
+# from torch_geometric.io import read_tu_data
+from data_utils import read_cell_data
+
 
 from torch.nn import Linear
 import torch.nn.functional as F
