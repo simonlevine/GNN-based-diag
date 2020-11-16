@@ -21,7 +21,7 @@ names = ['A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attri
 # edge labels, edge attr, node_attributes are OPTIONAL
 
 
-def parse_txt_array(src, sep=None, start=0, end=None, dtype=None, device=None):
+def parse_node_txt_array(src, sep=None, start=0, end=None, dtype=None, device=None):
     '''
     For Node labels,provided we have a value like "[ 80 80 111]",
     remove the brackets and split on the space
@@ -94,7 +94,7 @@ def read_file(folder, prefix, name, dtype=None):
 def read_node_label_file(folder,prefix,name,dtype=None):
     
     path = osp.join(folder, '{}_{}.txt'.format(prefix, name))
-    final = parse_txt_array(path, dtype=dtype)
+    final = parse_node_txt_array(path, dtype=dtype)
     print(final)
     return final
 
