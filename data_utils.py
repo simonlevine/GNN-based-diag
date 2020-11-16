@@ -91,7 +91,9 @@ def read_file(folder, prefix, name, dtype=None):
 
 def read_node_label_file(folder,prefix,name,dtype=None):
     path = osp.join(folder, '{}_{}.txt'.format(prefix, name))
-    return parse_txt_array(read_txt_array(path, dtype=dtype))
+    final = parse_txt_array(read_txt_array(path, dtype=dtype))
+    print(final)
+    return final
 
 def cat(seq):
     seq = [item for item in seq if item is not None]
