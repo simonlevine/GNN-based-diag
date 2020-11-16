@@ -82,7 +82,12 @@ def test(model,test_loader):
      model.eval()
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
-         data=data.to(DEVICE)
+        data.x =data.x.to(DEVICE)
+        data.y = data.y.to(DEVICE)
+        data.batch=data.batch.to(DEVICE)
+        data.edge_attr=data.edge_attr.to(DEVICE)
+        data.edge_index=data.edge_index.to(DEVICE)
+        
          out = model(data.x, data.edge_index, data.batch)  
          pred = out.argmax(dim=1)  # Use the class with highest probability.
          correct += int((pred == data.y).sum())  # Check against ground-truth labels.
