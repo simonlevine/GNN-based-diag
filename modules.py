@@ -185,7 +185,7 @@ class CellGraphDataset(InMemoryDataset):
         os.rename(osp.join(folder, self.name)) #, self.raw_dir)
 
     def process(self):
-        self.data, self.slices = read_cell_data(self.raw_dir, self.name)
+        self.data, self.slices = read_cell_data(folder=self.raw_dir, prefix=self.name)
 
         if self.pre_filter is not None:
             data_list = [self.get(idx) for idx in range(len(self))]

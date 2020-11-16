@@ -31,7 +31,7 @@ def parse_txt_array(src, sep=None, start=0, end=None, dtype=None, device=None):
     return src
 
 
-def read_cell_data(folder, prefix, names):
+def read_cell_data(folder, prefix, names=names):
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
     print('Loading Edge Index Data...')
     edge_index = read_file(folder, prefix, 'A', torch.long).t() - 1
