@@ -66,7 +66,12 @@ def train(model, train_loader, optimizer, criterion):
     model.train()
 
     for data in train_loader:  # Iterate in batches over the training dataset.
-        data=data.to(DEVICE)
+        data.x =data.x.to(DEVICE)
+        data.y = data.y.to(DEVICE)
+        data.batch=data.batch.to(DEVICE)
+        data.edge_attr=data.edge_attr.to(DEVICE)
+        data.edge_index==dat.edge_index.to(DEVICE)
+
         out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
         loss = criterion(out, data.y)  # Compute the loss.
         loss.backward()  # Derive gradients.
