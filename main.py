@@ -18,7 +18,12 @@ from torch_geometric.data import DataLoader
 from modules import GNN,GCN,CellGraphDataset
 from data_utils import read_cell_data
 
+
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+
 def main():
+
 
     dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
 
@@ -46,15 +51,15 @@ def main():
         print(data)
         print()
 
-    model = GNN(hidden_channels=64,dataset=dataset)
+    model = GNN(hidden_channels=64,dataset=dataset).to(DEVICE)
     print(model)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     criterion = torch.nn.CrossEntropyLoss()
 
     for epoch in range(1, 201):
-        train()
-        train_acc = test(model,data,train_loader,optimizer,criterion)
+        train(model,train_loader,optimizer,criterion)
+        train_acc = test(model,data)
         test_acc = test(model,data,test_loader)
         print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
 
@@ -63,16 +68,18 @@ def train(model, train_loader, optimizer, criterion):
     model.train()
 
     for data in train_loader:  # Iterate in batches over the training dataset.
-         out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
-         loss = criterion(out, data.y)  # Compute the loss.
-         loss.backward()  # Derive gradients.
-         optimizer.step()  # Update parameters based on gradients.
-         optimizer.zero_grad()  # Clear gradients.
+        data=data.to(DEVICE)
+        out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
+        loss = criterion(out, data.y)  # Compute the loss.
+        loss.backward()  # Derive gradients.
+        optimizer.step()  # Update parameters based on gradients.
+        optimizer.zero_grad()  # Clear gradients.
 
 def test(model,test_loader):
      model.eval()
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
+         data=data.to(DEVICE)
          out = model(data.x, data.edge_index, data.batch)  
          pred = out.argmax(dim=1)  # Use the class with highest probability.
          correct += int((pred == data.y).sum())  # Check against ground-truth labels.
