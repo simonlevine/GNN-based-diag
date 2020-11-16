@@ -15,52 +15,54 @@ from torch_geometric.utils import remove_self_loops
 from torch_geometric.data import Data
 
 names = [
-    'A', 'graph_indicator', 'node_attributes',
-    'edge_labels', 'edge_attributes', 'graph_labels', 'graph_attributes', 'node_labels'
-]
+    'A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes' ]
+#      ,
+#      'edge_labels', 'node_labels','node_attributes',
+# ]
 
 
-def read_cell_data(folder, prefix):
-    print('Loading Data...')
+def read_cell_data(folder, prefix, names):
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
-    names = [f.split(os.sep)[-1][len(prefix) + 1:-4] for f in files]
-
+    # names = [f.split(os.sep)[-1][len(prefix) + 1:-4] for f in files]
+    print('Loading Edge Index Data...')
     edge_index = read_file(folder, prefix, 'A', torch.long).t() - 1
     batch = read_file(folder, prefix, 'graph_indicator', torch.long) - 1
 
     node_attributes = node_labels = None
-    # if 'node_attributes' in names:
-    #     node_attributes = read_file(folder, prefix, 'node_attributes')
-    # if 'node_labels' in names:
-    #     node_labels = read_file(folder, prefix, 'node_labels', torch.long)
-    #     if node_labels.dim() == 1:
-    #         node_labels = node_labels.unsqueeze(-1)
-    #     node_labels = node_labels - node_labels.min(dim=0)[0]
-    #     node_labels = node_labels.unbind(dim=-1)
-    #     node_labels = [F.one_hot(x, num_classes=-1) for x in node_labels]
-    #     node_labels = torch.cat(node_labels, dim=-1).to(torch.float)
+    if 'node_attributes' in names:
+        node_attributes = read_file(folder, prefix, 'node_attributes')
+    if 'node_labels' in names:
+        node_labels = read_file(folder, prefix, 'node_labels', torch.long)
+        if node_labels.dim() == 1:
+            node_labels = node_labels.unsqueeze(-1)
+        node_labels = node_labels - node_labels.min(dim=0)[0]
+        node_labels = node_labels.unbind(dim=-1)
+        node_labels = [F.one_hot(x, num_classes=-1) for x in node_labels]
+        node_labels = torch.cat(node_labels, dim=-1).to(torch.float)
     x = cat([node_attributes, node_labels])
 
     edge_attributes, edge_labels = None, None
     if 'edge_attributes' in names:
+        print('Loading Edge Attribute Data...')
         edge_attributes = read_file(folder, prefix, 'edge_attributes')
-    # if 'edge_labels' in names:
-    #     edge_labels = read_file(folder, prefix, 'edge_labels', torch.long)
-    #     if edge_labels.dim() == 1:
-    #         edge_labels = edge_labels.unsqueeze(-1)
-    #     edge_labels = edge_labels - edge_labels.min(dim=0)[0]
-    #     edge_labels = edge_labels.unbind(dim=-1)
-    #     edge_labels = [F.one_hot(e, num_classes=-1) for e in edge_labels]
-    #     edge_labels = torch.cat(edge_labels, dim=-1).to(torch.float)
+    if 'edge_labels' in names:
+        edge_labels = read_file(folder, prefix, 'edge_labels', torch.long)
+        if edge_labels.dim() == 1:
+            edge_labels = edge_labels.unsqueeze(-1)
+        edge_labels = edge_labels - edge_labels.min(dim=0)[0]
+        edge_labels = edge_labels.unbind(dim=-1)
+        edge_labels = [F.one_hot(e, num_classes=-1) for e in edge_labels]
+        edge_labels = torch.cat(edge_labels, dim=-1).to(torch.float)
     edge_attr = cat([edge_attributes, edge_labels])
 
     y = None
     
     if 'graph_labels' in names:  # Classification problem.
+        print('Loading Graph Label Data...')
         y = read_file(folder, prefix, 'graph_labels', torch.long)
         _, y = y.unique(sorted=True, return_inverse=True)
-    # elif 'graph_attributes' in names:  # Regression problem.
-    #     y = read_file(folder, prefix, 'graph_attributes')
+    elif 'graph_attributes' in names:  # Regression problem.
+        y = read_file(folder, prefix, 'graph_attributes')
 
     num_nodes = edge_index.max().item() + 1 if x is None else x.size(0)
     edge_index, edge_attr = remove_self_loops(edge_index, edge_attr)
