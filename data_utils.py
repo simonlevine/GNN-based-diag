@@ -14,7 +14,7 @@ from torch_geometric.io import read_txt_array
 from torch_geometric.utils import remove_self_loops
 from torch_geometric.data import Data
 
-names = ['A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes','node_labels']
+NAMES = ['A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes','node_labels']
 #      ,
 #      'edge_labels', ,'node_attributes', 
 # ]
@@ -33,7 +33,7 @@ def parse_node_txt_array(src, sep=None, start=0, end=None, dtype=None, device=No
     return src
 
 
-def read_cell_data(folder, prefix, names=names):
+def read_cell_data(folder, prefix, names=NAMES):
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
     print('Loading Edge Index Data...')
     edge_index = read_file(folder, prefix, 'A', torch.long).t() - 1
