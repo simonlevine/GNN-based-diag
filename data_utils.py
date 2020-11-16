@@ -26,8 +26,10 @@ def parse_txt_array(src, sep=None, start=0, end=None, dtype=None, device=None):
     For Node labels,provided we have a value like "[ 80 80 111]",
     remove the brackets and split on the space
     '''
-    src = [[float(x) for x in line[1:-1].split(sep)[start:end] if x.isdigit()] for line in src]
-    src = torch.tensor(src, dtype=dtype).squeeze()
+    with open(src, 'r') as f:
+        src = f.read().split('\n')[:-1]
+        src = [[float(x) for x in line[1:-1].split(sep)[start:end] if x.isdigit()] for line in src]
+        src = torch.tensor(src, dtype=dtype).squeeze()
     return src
 
 
@@ -90,8 +92,9 @@ def read_file(folder, prefix, name, dtype=None):
 
 
 def read_node_label_file(folder,prefix,name,dtype=None):
+    
     path = osp.join(folder, '{}_{}.txt'.format(prefix, name))
-    final = parse_txt_array(read_txt_array(path, dtype=dtype))
+    final = parse_txt_array(path, dtype=dtype)
     print(final)
     return final
 
