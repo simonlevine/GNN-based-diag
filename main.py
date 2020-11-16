@@ -26,7 +26,7 @@ def main():
 
 
     dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
-    visualize_graph(dataset[0])
+    # visualize_graph(dataset[0])
 
     print_graph_stats(dataset)
 
