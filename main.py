@@ -6,7 +6,7 @@ import shutil
 import torch
 from torch_geometric.data import InMemoryDataset, download_url, extract_zip
 from torch_geometric.data import Dataset
-
+from loguru import logger
 from tqdm.notebook import tqdm
 
 from torch.nn import Linear
@@ -24,10 +24,10 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def main():
 
     dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
-    print(dataset.num_node_features)
+    logger.critical(dataset.num_node_features)
     # visualize_graph(dataset[0])
     num_node_features = dataset[0].num_node_features
-
+    logger.critical(num_node_features)
     print_graph_stats(dataset)
 
     torch.manual_seed(12345)
