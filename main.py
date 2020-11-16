@@ -22,7 +22,7 @@ from modules import GNN,GCN,CellGraphDataset
 
 def main():
 
-    dataset = CellGraphDataset(root='/data', name = 'DS',use_node_attr=True,use_edge_attr=True)
+    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=True,use_edge_attr=True)
 
     print_graph_stats(dataset)
 
