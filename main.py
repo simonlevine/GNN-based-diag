@@ -51,7 +51,7 @@ def main():
         print(data)
         print()
 
-    model = GNN(hidden_channels=64,num_node_features=num_node_features).to(DEVICE)
+    model = GNN(hidden_channels=64,dataset=dataset).to(DEVICE)
     print(model)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)

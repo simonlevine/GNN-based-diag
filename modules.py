@@ -21,10 +21,10 @@ from torch_geometric.nn import GraphConv
 
 
 class GNN(torch.nn.Module):
-    def __init__(self, hidden_channels,num_node_features):
+    def __init__(self, hidden_channels,dataset):
         super(GNN, self).__init__()
         torch.manual_seed(12345)
-        self.conv1 = GraphConv(num_node_features, hidden_channels)
+        self.conv1 = GraphConv(dataset.num_node_features, hidden_channels)
         self.conv2 = GraphConv(hidden_channels, hidden_channels)
         self.conv3 = GraphConv(hidden_channels, hidden_channels)
         self.conv4 = GraphConv(hidden_channels, hidden_channels)
@@ -49,10 +49,10 @@ class GNN(torch.nn.Module):
 
 
 class GCN(torch.nn.Module):
-    def __init__(self, hidden_channels,num_node_features):
+    def __init__(self, hidden_channels,dataset):
         super(GCN, self).__init__()
         torch.manual_seed(12345)
-        self.conv1 = GCNConv(num_node_features, hidden_channels)
+        self.conv1 = GCNConv(dataset.num_node_features, hidden_channels)
         self.conv2 = GCNConv(hidden_channels, hidden_channels)
         self.conv3 = GCNConv(hidden_channels, hidden_channels)
         self.lin = Linear(hidden_channels, dataset.num_classes)
