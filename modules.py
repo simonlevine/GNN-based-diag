@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 # from torch_geometric.io import read_tu_data
 from data_utils import read_cell_data
-
+from loguru import logger
 
 from torch.nn import Linear
 import torch.nn.functional as F
@@ -122,10 +122,13 @@ class CellGraphDataset(InMemoryDataset):
                                         pre_filter)
         
         self.data, self.slices = torch.load(self.processed_paths[0])
-        print(self.data)
+
+        logger.critical(data.x)
+
         if self.data.x is not None and not use_node_attr:
             num_node_attributes = self.num_node_attributes
             self.data.x = self.data.x[:, num_node_attributes:]
+
         if self.data.edge_attr is not None and not use_edge_attr:
             num_edge_attributes = self.num_edge_attributes
             self.data.edge_attr = self.data.edge_attr[:, num_edge_attributes:]
