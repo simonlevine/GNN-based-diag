@@ -11,7 +11,6 @@ import shutil
 
 import torch
 from torch_geometric.data import InMemoryDataset, download_url, extract_zip
-from torch_geometric.data import Dataset
 
 from tqdm import tqdm
 
@@ -84,7 +83,7 @@ class GCN(torch.nn.Module):
 
 
 
-class CellGraphDataset(Dataset):
+class CellGraphDataset(InMemoryDataset):
     r"""
 
     .. note::
