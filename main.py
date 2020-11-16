@@ -17,7 +17,7 @@ from torch_geometric.nn import GCNConv
 from torch_geometric.nn import global_mean_pool
 from torch_geometric.data import DataLoader
 
-
+from moduels import GNN,GCN,CellGraphDataset
 
 
 def main():
