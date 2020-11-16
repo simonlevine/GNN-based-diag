@@ -7,6 +7,6 @@ import matplotlib.pyplot as plt
 
 def visualize_graph(instance):
     graph = to_networkx(instance)
-    plt.figure(1,figsize=(14,12)) 
+    fig = plt.figure(1,figsize=(14,12)) 
     nx.draw(graph,node_size=75,linewidths=6,node_color='red',edge_color='#00b4d9')
     plt.savefig('./first_graph.png')

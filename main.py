@@ -16,6 +16,7 @@ from torch_geometric.nn import global_mean_pool
 from torch_geometric.data import DataLoader
 
 from modules import GNN,GCN,CellGraphDataset
+from visualizations import visualize_graph
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -23,7 +24,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def main():
 
     dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
-    # visualize_graph(dataset[0])
+    visualize_graph(dataset[0])
 
     print_graph_stats(dataset)
 
