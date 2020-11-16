@@ -21,6 +21,7 @@ names = [
 
 
 def read_cell_data(folder, prefix):
+    print('Loading Data...')
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
     names = [f.split(os.sep)[-1][len(prefix) + 1:-4] for f in files]
 
