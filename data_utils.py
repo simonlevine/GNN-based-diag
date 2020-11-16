@@ -14,14 +14,25 @@ from torch_geometric.io import read_txt_array
 from torch_geometric.utils import remove_self_loops
 from torch_geometric.data import Data
 
-names = ['A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes' ]
+names = ['A', 'graph_indicator', 'edge_attributes', 'graph_labels', 'graph_attributes','node_labels']
 #      ,
-#      'edge_labels', 'node_labels','node_attributes',
+#      'edge_labels', ,'node_attributes', 
 # ]
+# edge labels, edge attr, node_attributes are OPTIONAL
+
+
+def parse_txt_array(src, sep=None, start=0, end=None, dtype=None, device=None):
+    '''
+    For Node labels,provided we have a value like "[ 80 80 111]",
+    remove the brackets and split on the space
+    '''
+    src = [[float(x) for x in line[1:-1].split(sep)[start:end] if x.isdigit()] for line in src]
+    src = torch.tensor(src, dtype=dtype).squeeze()
+    return src
+
 
 def read_cell_data(folder, prefix, names):
     files = glob.glob(osp.join(folder, '{}_*.txt'.format(prefix)))
-    # names = [f.split(os.sep)[-1][len(prefix) + 1:-4] for f in files]
     print('Loading Edge Index Data...')
     edge_index = read_file(folder, prefix, 'A', torch.long).t() - 1
     batch = read_file(folder, prefix, 'graph_indicator', torch.long) - 1
@@ -30,7 +41,7 @@ def read_cell_data(folder, prefix, names):
     if 'node_attributes' in names:
         node_attributes = read_file(folder, prefix, 'node_attributes')
     if 'node_labels' in names:
-        node_labels = read_file(folder, prefix, 'node_labels', torch.long)
+        node_labels = read_node_label_file(folder, prefix, 'node_labels', torch.long)
         if node_labels.dim() == 1:
             node_labels = node_labels.unsqueeze(-1)
         node_labels = node_labels - node_labels.min(dim=0)[0]
@@ -77,6 +88,10 @@ def read_file(folder, prefix, name, dtype=None):
     path = osp.join(folder, '{}_{}.txt'.format(prefix, name))
     return read_txt_array(path, sep=',', dtype=dtype)
 
+
+def read_node_label_file(folder,prefix,name,dtype=None):
+    path = osp.join(folder, '{}_{}.txt'.format(prefix, name))
+    return parse_txt_array(read_txt_array(path, dtype=dtype))
 
 def cat(seq):
     seq = [item for item in seq if item is not None]

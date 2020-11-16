@@ -26,8 +26,7 @@ def main():
     dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
     logger.critical(dataset.num_node_features)
     # visualize_graph(dataset[0])
-    num_node_features = dataset[0].num_node_features
-    logger.critical(num_node_features)
+    num_node_features = dataset.num_node_features
     print_graph_stats(dataset)
 
     torch.manual_seed(12345)
