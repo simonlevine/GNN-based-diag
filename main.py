@@ -66,14 +66,14 @@ def train(model, train_loader, optimizer, criterion):
     model.train()
 
     for data in train_loader:  # Iterate in batches over the training dataset.
-        data.x =data.x.to(DEVICE)
-        data.y = data.y.to(DEVICE)
-        data.batch=data.batch.to(DEVICE)
-        data.edge_attr=data.edge_attr.to(DEVICE)
-        data.edge_index=data.edge_index.to(DEVICE)
+        # data.x = data.x.to(DEVICE)
+        # data.y = data.y.to(DEVICE)
+        # data.batch=data.batch.to(DEVICE)
+        # data.edge_attr=data.edge_attr.to(DEVICE)
+        # data.edge_index=data.edge_index.to(DEVICE)
 
-        out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
-        loss = criterion(out, data.y)  # Compute the loss.
+        out = model(data.x.to(DEVICE), data.edge_index.to(DEVICE), data.batch.to(DEVICE))  # Perform a single forward pass.
+        loss = criterion(out, data.y.to(DEVICE))  # Compute the loss.
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
         optimizer.zero_grad()  # Clear gradients.
@@ -82,13 +82,13 @@ def test(model,test_loader):
      model.eval()
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
-        data.x =data.x.to(DEVICE)
-        data.y = data.y.to(DEVICE)
-        data.batch=data.batch.to(DEVICE)
-        data.edge_attr=data.edge_attr.to(DEVICE)
-        data.edge_index=data.edge_index.to(DEVICE)
+        # data.x = data.x.to(DEVICE)
+        # data.y = data.y.to(DEVICE)
+        # data.batch=data.batch.to(DEVICE)
+        # data.edge_attr=data.edge_attr.to(DEVICE)
+        # data.edge_index=data.edge_index.to(DEVICE)
 
-        out = model(data.x, data.edge_index, data.batch)  
+        out = model(data.x.to(DEVICE), data.edge_index.to(DEVICE), data.batch.to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
         correct += int((pred == data.y).sum())  # Check against ground-truth labels.
      return correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
