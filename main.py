@@ -24,9 +24,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def main():
 
     dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=False)
-    logger.critical(dataset.num_node_features)
     # visualize_graph(dataset[0])
-    num_node_features = dataset.num_node_features
     print_graph_stats(dataset)
 
     torch.manual_seed(12345)
@@ -41,8 +39,8 @@ def main():
     print(f'Number of test graphs: {len(test_dataset)}')
 
 
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 
     for step, data in enumerate(train_loader):
         print(f'Step {step + 1}:')
