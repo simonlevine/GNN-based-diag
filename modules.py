@@ -122,6 +122,7 @@ class CellGraphDataset(InMemoryDataset):
                                         pre_filter)
         
         self.data, self.slices = torch.load(self.processed_paths[0])
+        print(self.data)
         if self.data.x is not None and not use_node_attr:
             num_node_attributes = self.num_node_attributes
             self.data.x = self.data.x[:, num_node_attributes:]
