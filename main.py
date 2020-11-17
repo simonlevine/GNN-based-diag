@@ -66,7 +66,10 @@ def train(model, train_loader, optimizer, criterion):
     model.train()
 
     for data in train_loader:  # Iterate in batches over the training dataset.
-        batch, edge_attr, edge_index, x, y = data
+        batch, edge_attr, edge_index, x, y = data[0], data[1],data[2],data[3],data[4]
+
+        for i in [batch, edge_attr, edge_index, x, y]:
+            logger.warning(i)
 
         out = model(x.to(DEVICE), edge_index.to(DEVICE), batch.to(DEVICE))  # Perform a single forward pass.
         loss = criterion(out, y.to(DEVICE))  # Compute the loss.
@@ -78,7 +81,9 @@ def test(model,test_loader):
      model.eval()
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
-        batch, edge_attr, edge_index, x, y = data
+        batch, edge_attr, edge_index, x, y = data[0], data[1],data[2],data[3],data[4]
+
+        
         out = model(x.to(DEVICE), edge_index.to(DEVICE),batch.to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
         correct += int((pred == y.to(DEVICE)).sum())  # Check against ground-truth labels.
