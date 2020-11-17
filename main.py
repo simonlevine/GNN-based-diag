@@ -94,9 +94,9 @@ def test(model,test_loader):
         # data.edge_attr=data.edge_attr.to(DEVICE)
         # data.edge_index=data.edge_index.to(DEVICE)
 
-        out = model(data.x.to(DEVICE), data.edge_index.to(DEVICE), data.batch.to(DEVICE))  
+        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE), data['batch'].to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
-        correct += int((pred == data.y).sum())  # Check against ground-truth labels.
+        correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
      return correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
 
 
