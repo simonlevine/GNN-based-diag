@@ -19,7 +19,7 @@ from modules import GNN,GCN,CellGraphDataset
 # from visualizations import visualize_graph
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+BATCH_SIZE = 8
 
 def main():
 
@@ -39,8 +39,8 @@ def main():
     print(f'Number of test graphs: {len(test_dataset)}')
 
 
-    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
-    test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
     for step, data in enumerate(train_loader):
         print(f'Step {step + 1}:')
@@ -56,16 +56,19 @@ def main():
     criterion = torch.nn.CrossEntropyLoss()
 
     for epoch in range(1, 201):
-        train(model,train_loader,optimizer,criterion)
-        train_acc = test(model,data)
-        test_acc = test(model,data,test_loader)
+        train_results = train(model,train_loader,optimizer,criterion)
+        test_results = test(model,test_loader)
+
+        train_acc = train_results['accuracy']
+        test_acc = test_results['accuracy']
         print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
 
 
 def train(model, train_loader, optimizer, criterion):
     model.train()
+    results={'loss':[],'accuracy':[]}
 
-    for data in train_loader:  # Iterate in batches over the training dataset.
+    for i, data in enumerate(train_loader):  # Iterate in batches over the training dataset.
 
         # data.to(DEVICE)
         logger.warning(data['x'])
@@ -77,17 +80,31 @@ def train(model, train_loader, optimizer, criterion):
         optimizer.step()  # Update parameters based on gradients.
         optimizer.zero_grad()  # Clear gradients.
 
+        pred = out.argmax(dim=1)  # Use the class with highest probability.
+        correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
+
+        results['loss'].append(loss)
+        results['accuracy'].append(correct / BATCH_SIZE)
+        # logger.warning(f'Batch{i}: {results}')
+
+    return results
+
 def test(model,test_loader):
      model.eval()
      correct = 0
+    results={'loss':[],'accuracy':[]}
+
      for data in test_loader:  # Iterate in batches over the training/test dataset.
         # data.to(DEVICE)
-        logger.critical(data)
-
         out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
         correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
-     return correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
+        accuracy = correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
+
+        results['loss'].append(loss)
+        results['accuracy'].append(accuracy)
+        # logger.warning(f'Test Results : {results}')
+     return results  # Derive ratio of correct predictions.
 
 
 
