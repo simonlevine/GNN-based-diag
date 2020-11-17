@@ -89,7 +89,7 @@ def train(model, train_loader, optimizer, criterion):
 def test(model,test_loader):
     model.eval()
     correct = 0
-    results={'loss':[],'accuracy':[]}
+    results={'accuracy':[]}
 
     for data in test_loader:  # Iterate in batches over the training/test dataset.
     # data.to(DEVICE)
@@ -98,7 +98,6 @@ def test(model,test_loader):
         correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
         accuracy = correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
 
-        results['loss'].append(loss)
         results['accuracy'].append(accuracy)
     # logger.warning(f'Test Results : {results}')
     return results  # Derive ratio of correct predictions.
