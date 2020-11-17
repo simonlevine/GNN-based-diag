@@ -83,7 +83,7 @@ def train(model, train_loader, optimizer, criterion):
         correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
 
         results['loss'].append(loss)
-        results['accuracy'].append(len(train_loader.dataset))
+        results['accuracy'].append(correct / len(train_loader.dataset))
         # logger.warning(f'Batch{i}: {results}')
 
     return results
