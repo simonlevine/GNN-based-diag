@@ -66,19 +66,9 @@ def train(model, train_loader, optimizer, criterion):
     model.train()
 
     for data in train_loader:  # Iterate in batches over the training dataset.
-        # data.x = data.x.to(DEVICE)
-        # data.y = data.y.to(DEVICE)
-        # data.batch=data.batch.to(DEVICE)
-        # data.edge_attr=data.edge_attr.to(DEVICE)
-        # data.edge_index=data.edge_index.to(DEVICE)
+        batch, edge_attr, edge_index, x, y = data
 
-        logger.warning(type(data))
-        logger.warning(data)
-        for key, item in data:
-            print("{} found in data".format(key))
-            print(item)
-
-        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE), data['batch'].to(DEVICE))  # Perform a single forward pass.
+        out = model(x.to(DEVICE), edge_index.to(DEVICE), batch.to(DEVICE))  # Perform a single forward pass.
         loss = criterion(out, data['y'].to(DEVICE))  # Compute the loss.
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
@@ -88,15 +78,10 @@ def test(model,test_loader):
      model.eval()
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
-        # data.x = data.x.to(DEVICE)
-        # data.y = data.y.to(DEVICE)
-        # data.batch=data.batch.to(DEVICE)
-        # data.edge_attr=data.edge_attr.to(DEVICE)
-        # data.edge_index=data.edge_index.to(DEVICE)
-
-        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE), data['batch'].to(DEVICE))  
+        batch, edge_attr, edge_index, x, y = data
+        out = model(x.to(DEVICE), edge_index.to(DEVICE),batch.to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
-        correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
+        correct += int((pred == y.to(DEVICE)).sum())  # Check against ground-truth labels.
      return correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
 
 
