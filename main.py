@@ -65,7 +65,7 @@ def main():
 def train(model, train_loader, optimizer, criterion):
     model.train()
 
-    for batch in train_loader:  # Iterate in batches over the training dataset.
+    for data in train_loader:  # Iterate in batches over the training dataset.
         # data.x = data.x.to(DEVICE)
         # data.y = data.y.to(DEVICE)
         # data.batch=data.batch.to(DEVICE)
