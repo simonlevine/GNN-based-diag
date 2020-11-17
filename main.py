@@ -82,6 +82,7 @@ def test(model,test_loader):
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
         # data.to(DEVICE)
+        logger.critical(data)
 
         out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
