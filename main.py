@@ -69,8 +69,8 @@ def train(model, train_loader, optimizer, criterion):
 
         data.to(DEVICE)
 
-        out = model(x, edge_index, batch)  # Perform a single forward pass.
-        loss = criterion(out, y)  # Compute the loss.
+        out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass.
+        loss = criterion(out, data.y)  # Compute the loss.
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
         optimizer.zero_grad()  # Clear gradients.
@@ -79,12 +79,11 @@ def test(model,test_loader):
      model.eval()
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
-        batch, edge_attr, edge_index, x, y = data[0], data[1],data[2],data[3],data[4]
-
+        data.to(DEVICE)
         
-        out = model(x, edge_index,batch)  
+        out = model(data.x, data.edge_index,data.batch)  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
-        correct += int((pred == y).sum())  # Check against ground-truth labels.
+        correct += int((pred == data.y).sum())  # Check against ground-truth labels.
      return correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
 
 
