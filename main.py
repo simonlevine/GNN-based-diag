@@ -67,6 +67,7 @@ def main():
 def train(model, train_loader, optimizer, criterion):
     model.train()
     results={'loss':[],'accuracy':[]}
+    correct = 0
 
     for i, data in enumerate(train_loader):  # Iterate in batches over the training dataset.
 
