@@ -78,8 +78,8 @@ def train(model, train_loader, optimizer, criterion):
             print("{} found in data".format(key))
             print(item)
 
-        out = model(data.x.to(DEVICE), data.edge_index.to(DEVICE), data.batch.to(DEVICE))  # Perform a single forward pass.
-        loss = criterion(out, data.y.to(DEVICE))  # Compute the loss.
+        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE), data['batch'].to(DEVICE))  # Perform a single forward pass.
+        loss = criterion(out, data['y'].to(DEVICE))  # Compute the loss.
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
         optimizer.zero_grad()  # Clear gradients.
