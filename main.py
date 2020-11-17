@@ -25,7 +25,7 @@ BATCH_SIZE = 8
 
 def main():
 
-    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=False)
+    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=True)
     # visualize_graph(dataset[0])
     print_graph_stats(dataset)
 
