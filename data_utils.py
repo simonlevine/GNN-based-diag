@@ -99,7 +99,7 @@ def read_node_label_file(folder,prefix,name,dtype=None):
     
     path = osp.join(folder, '{}_{}.txt'.format(prefix, name))
     final = parse_node_txt_array(path, dtype=dtype)
-    print(final)
+    # print(final)
     return final
 
 def cat(seq):
