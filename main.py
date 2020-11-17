@@ -69,7 +69,7 @@ def train(model, train_loader, optimizer, criterion):
         batch, edge_attr, edge_index, x, y = data
 
         out = model(x.to(DEVICE), edge_index.to(DEVICE), batch.to(DEVICE))  # Perform a single forward pass.
-        loss = criterion(out, data['y'].to(DEVICE))  # Compute the loss.
+        loss = criterion(out, y.to(DEVICE))  # Compute the loss.
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
         optimizer.zero_grad()  # Clear gradients.
