@@ -61,7 +61,7 @@ def main():
 
         train_acc = train_results['accuracy']
         test_acc = test_results['accuracy']
-        print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+        print(f'Epoch: {epoch}, Train Acc: {train_acc}, Test Acc: {test_acc}')
 
 
 def train(model, train_loader, optimizer, criterion):
