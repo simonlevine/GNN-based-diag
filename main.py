@@ -71,7 +71,7 @@ def train(model, train_loader, optimizer, criterion):
         logger.warning(data['x'])
         logger.warning(type(data['x']))
 
-        out = model(data['x'], data['edge_index'],data['batch'])  # Perform a single forward pass.
+        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  # Perform a single forward pass.
         loss = criterion(out, data['y'])  # Compute the loss.
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
@@ -83,7 +83,7 @@ def test(model,test_loader):
      for data in test_loader:  # Iterate in batches over the training/test dataset.
         # data.to(DEVICE)
 
-        out = model(data['x'], data['edge_index'],data['batch'])  
+        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
         correct += int((pred == data['y']).sum())  # Check against ground-truth labels.
      return correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
