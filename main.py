@@ -70,10 +70,6 @@ def train(model, train_loader, optimizer, criterion):
 
     for i, data in enumerate(train_loader):  # Iterate in batches over the training dataset.
 
-        # data.to(DEVICE)
-        logger.warning(data['x'])
-        logger.warning(type(data['x']))
-
         out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  # Perform a single forward pass.
         loss = criterion(out, data['y'].to(DEVICE))  # Compute the loss.
         loss.backward()  # Derive gradients.
@@ -90,21 +86,21 @@ def train(model, train_loader, optimizer, criterion):
     return results
 
 def test(model,test_loader):
-     model.eval()
-     correct = 0
+    model.eval()
+    correct = 0
     results={'loss':[],'accuracy':[]}
 
-     for data in test_loader:  # Iterate in batches over the training/test dataset.
-        # data.to(DEVICE)
-        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
-        pred = out.argmax(dim=1)  # Use the class with highest probability.
-        correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
-        accuracy = correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
+    for data in test_loader:  # Iterate in batches over the training/test dataset.
+    # data.to(DEVICE)
+    out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
+    pred = out.argmax(dim=1)  # Use the class with highest probability.
+    correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
+    accuracy = correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
 
-        results['loss'].append(loss)
-        results['accuracy'].append(accuracy)
-        # logger.warning(f'Test Results : {results}')
-     return results  # Derive ratio of correct predictions.
+    results['loss'].append(loss)
+    results['accuracy'].append(accuracy)
+    # logger.warning(f'Test Results : {results}')
+    return results  # Derive ratio of correct predictions.
 
 
 
