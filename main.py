@@ -92,13 +92,13 @@ def test(model,test_loader):
 
     for data in test_loader:  # Iterate in batches over the training/test dataset.
     # data.to(DEVICE)
-    out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
-    pred = out.argmax(dim=1)  # Use the class with highest probability.
-    correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
-    accuracy = correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
+        out = model(data['x'].to(DEVICE), data['edge_index'].to(DEVICE),data['batch'].to(DEVICE))  
+        pred = out.argmax(dim=1)  # Use the class with highest probability.
+        correct += int((pred == data['y'].to(DEVICE)).sum())  # Check against ground-truth labels.
+        accuracy = correct / len(test_loader.dataset)  # Derive ratio of correct predictions.
 
-    results['loss'].append(loss)
-    results['accuracy'].append(accuracy)
+        results['loss'].append(loss)
+        results['accuracy'].append(accuracy)
     # logger.warning(f'Test Results : {results}')
     return results  # Derive ratio of correct predictions.
 
