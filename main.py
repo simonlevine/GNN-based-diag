@@ -23,7 +23,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def main():
 
-    dataset = CellGraphDataset(root='./data', name = 'DS',use_node_attr=False,use_edge_attr=False)
+    dataset = CellGraphDataset(root='./data', name = 'DS_sample',use_node_attr=False,use_edge_attr=False)
     # visualize_graph(dataset[0])
     print_graph_stats(dataset)
 
@@ -65,7 +65,7 @@ def main():
 def train(model, train_loader, optimizer, criterion):
     model.train()
 
-    for data in train_loader:  # Iterate in batches over the training dataset.
+    for batch in train_loader:  # Iterate in batches over the training dataset.
         # data.x = data.x.to(DEVICE)
         # data.y = data.y.to(DEVICE)
         # data.batch=data.batch.to(DEVICE)
@@ -76,6 +76,7 @@ def train(model, train_loader, optimizer, criterion):
         logger.warning(data)
         for key, item in data:
             print("{} found in data".format(key))
+            print(item)
 
         out = model(data.x.to(DEVICE), data.edge_index.to(DEVICE), data.batch.to(DEVICE))  # Perform a single forward pass.
         loss = criterion(out, data.y.to(DEVICE))  # Compute the loss.
