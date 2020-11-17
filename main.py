@@ -68,6 +68,8 @@ def train(model, train_loader, optimizer, criterion):
     for data in train_loader:  # Iterate in batches over the training dataset.
 
         # data.to(DEVICE)
+        logger.warning(data['x'])
+        logger.warning(type(data['x']))
 
         out = model(data['x'], data['edge_index'],data['batch'])  # Perform a single forward pass.
         loss = criterion(out, data['y'])  # Compute the loss.
@@ -80,7 +82,7 @@ def test(model,test_loader):
      correct = 0
      for data in test_loader:  # Iterate in batches over the training/test dataset.
         # data.to(DEVICE)
-        
+
         out = model(data['x'], data['edge_index'],data['batch'])  
         pred = out.argmax(dim=1)  # Use the class with highest probability.
         correct += int((pred == data['y']).sum())  # Check against ground-truth labels.
